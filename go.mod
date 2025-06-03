@@ -125,3 +125,5 @@ require (
 	pault.ag/go/modprobe v0.2.0 // indirect
 	pault.ag/go/topsort v0.1.1 // indirect
 )
+
+replace github.com/mudler/yip v1.16.1 => ./yip

@@ -27,6 +27,7 @@ const (
 	Debian             Distro = "debian"
 	Ubuntu             Distro = "ubuntu"
 	RedHat             Distro = "redhat"
+	RedHatShortHand    Distro = "rhel"
 	RockyLinux         Distro = "rocky"
 	AlmaLinux          Distro = "almalinux"
 	Fedora             Distro = "fedora"

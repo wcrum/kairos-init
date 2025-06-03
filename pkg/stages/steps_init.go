@@ -46,7 +46,7 @@ func GetInitrdStage(sys values.System, logger types.KairosLogger) ([]schema.Stag
 			stage = append(stage, []schema.Stage{
 				{
 					Name:     "Add fips support to initramfs",
-					OnlyIfOs: "Debian.*|Fedora.*|CentOS.*|RedHat.*|Rocky.*|AlmaLinux.*|SLES.*|[O-o]penSUSE.*",
+					OnlyIfOs: "Debian.*|Fedora.*|CentOS.*|Red\\s*Hat.*|Rocky.*|AlmaLinux.*|SLES.*|[O-o]penSUSE.*",
 					Files: []schema.File{
 						{
 							Path:        "/etc/dracut.conf.d/kairos-fips.conf",
@@ -101,7 +101,7 @@ func GetInitrdStage(sys values.System, logger types.KairosLogger) ([]schema.Stag
 			}
 		}
 
-		if sys.Distro == values.RockyLinux || sys.Distro == values.AlmaLinux || sys.Distro == values.RedHat {
+		if sys.Distro == values.RockyLinux || sys.Distro == values.AlmaLinux || sys.Distro == values.RedHat || sys.Distro == values.RedHatShortHand {
 			// On Rocky and AlmaLinux we need to use the plain network module
 			logger.Logger.Debug().Str("distro", string(sys.Distro)).Str("version", sys.Version).Msg("Using the plain network module and disabling sysext")
 			networkModule = "network"
@@ -110,7 +110,7 @@ func GetInitrdStage(sys values.System, logger types.KairosLogger) ([]schema.Stag
 		stage = append(stage, []schema.Stage{
 			{
 				Name:     "Add proper network module to initramfs",
-				OnlyIfOs: "Debian.*|Fedora.*|CentOS.*|RedHat.*|Rocky.*|AlmaLinux.*|SLES.*|[O-o]penSUSE.*",
+				OnlyIfOs: "Debian.*|Fedora.*|CentOS.*|Red\\s*Hat.*|Rocky.*|AlmaLinux.*|SLES.*|[O-o]penSUSE.*",
 				Files: []schema.File{
 					{
 						Path:        "/etc/dracut.conf.d/kairos-network.conf",
@@ -127,7 +127,7 @@ func GetInitrdStage(sys values.System, logger types.KairosLogger) ([]schema.Stag
 			stage = append(stage, []schema.Stage{
 				{
 					Name:     "Add proper sysext module to initramfs",
-					OnlyIfOs: "Debian.*|Fedora.*|CentOS.*|RedHat.*|Rocky.*|AlmaLinux.*|SLES.*|[O-o]penSUSE.*",
+					OnlyIfOs: "Debian.*|Fedora.*|CentOS.*|Red\\s*Hat.*|Rocky.*|AlmaLinux.*|SLES.*|[O-o]penSUSE.*",
 					Files: []schema.File{
 						{
 							Path:        "/etc/dracut.conf.d/kairos-sysext.conf",
@@ -149,7 +149,7 @@ func GetInitrdStage(sys values.System, logger types.KairosLogger) ([]schema.Stag
 		stage = append(stage, []schema.Stage{
 			{
 				Name:     "Create new initrd",
-				OnlyIfOs: "Ubuntu.*|Debian.*|Fedora.*|CentOS.*|RedHat.*|Rocky.*|AlmaLinux.*|SLES.*|[O-o]penSUSE.*",
+				OnlyIfOs: "Ubuntu.*|Debian.*|Fedora.*|CentOS.*|Red\\s*Hat.*|Rocky.*|AlmaLinux.*|SLES.*|[O-o]penSUSE.*",
 				Commands: []string{
 					fmt.Sprintf("depmod -a %s", kernel),
 					dracutCmd,
@@ -430,7 +430,7 @@ func GetServicesStage(_ values.System, _ types.KairosLogger) []schema.Stage {
 		},
 		{
 			Name:     "Enable services for RHEL family",
-			OnlyIfOs: "Fedora.*|CentOS.*|RedHat.*|Rocky.*|AlmaLinux.*",
+			OnlyIfOs: "Fedora.*|CentOS.*|Red\\s*Hat.*|Rocky.*|AlmaLinux.*",
 			Systemctl: schema.Systemctl{
 				Enable: []string{
 					"sshd",

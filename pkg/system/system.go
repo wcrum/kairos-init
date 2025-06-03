@@ -1,10 +1,11 @@
 package system
 
 import (
-	"github.com/sanity-io/litter"
 	"os"
 	"runtime"
 	"strings"
+
+	"github.com/sanity-io/litter"
 
 	"github.com/joho/godotenv"
 	"github.com/kairos-io/kairos-init/pkg/values"
@@ -52,6 +53,9 @@ func DetectSystem(l sdkTypes.KairosLogger) values.System {
 		s.Distro = values.AlmaLinux
 		s.Family = values.RedHatFamily
 	case values.RedHat:
+		s.Distro = values.RedHat
+		s.Family = values.RedHatFamily
+	case values.RedHatShortHand:
 		s.Distro = values.RedHat
 		s.Family = values.RedHatFamily
 	case values.Arch:

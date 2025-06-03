@@ -1,0 +1,19 @@
+FROM wcrum/kairos-init:testing AS kairos-init
+
+FROM redhat/ubi9-init
+ARG USERNAME
+ARG PASSWORD
+
+RUN dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm -y
+# Subscription manager in redhat does not run directly in containers unless you run on a redhat host, hence we remove the rhsm-host, login to the redhat subscription and add the repos
+RUN rm /etc/rhsm-host && subscription-manager register --username ${USERNAME} --password "${PASSWORD}" \
+  && yum repolist \
+  && subscription-manager attach --auto \
+  && subscription-manager repos --enable rhel-9-for-x86_64-appstream-rpms \
+  && yum repolist
+
+ARG VERSION=1.0.0
+
+COPY --from=kairos-init /kairos-init /kairos-init
+RUN /kairos-init --version "${VERSION}" --registry redhat/ubi9
+RUN rm /kairos-init
